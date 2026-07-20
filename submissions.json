@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1784540274933,
+    "Name": "Test User",
+    "Email": "kishorekumar.78k@gmail.com",
+    "Company": "TestCorp",
+    "Phone": "1234567890",
+    "Service": "Statutory Audit",
+    "Message": "This is a test message to verify email delivery.",
+    "date": "2026-07-20T09:37:54.933Z"
+  },
+  {
+    "id": 1784540726441,
+    "Name": "Ravi Kumar",
+    "Email": "kishorekumar.78k@gmail.com",
+    "Company": "ABC Corp",
+    "Phone": "9876543210",
+    "Service": "GST Compliance",
+    "Message": "Need assistance with GST filing for Q2",
+    "date": "2026-07-20T09:45:26.441Z"
+  },
+  {
+    "id": 1784547241775,
+    "Name": "Test",
+    "Email": "thrishyad69@gmail.com",
+    "Company": "Xtech",
+    "Phone": "9080877854",
+    "Service": "Tax Advisory",
+    "Message": "I want a tax support queries",
+    "date": "2026-07-20T11:34:01.775Z"
+  }
+]
