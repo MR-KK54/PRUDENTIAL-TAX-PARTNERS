@@ -1,7 +1,7 @@
 ;(function(){
   'use strict';
 
-  var API_URL = 'https://prudential-tax-partners-api.your-subdomain.workers.dev';
+  var API_URL = 'https://prudential-tax-partners-api.prudential-tax-partners-api.workers.dev';
 
   // ===== PRELOADER =====
   window.addEventListener('load', function(){
