@@ -8,11 +8,8 @@
 
   // ===== HEADER SCROLL =====
   const header = document.getElementById('header');
-  let lastScroll = 0;
   window.addEventListener('scroll', function(){
-    const y = window.scrollY;
-    header.classList.toggle('scrolled', y > 80);
-    lastScroll = y;
+    header.classList.toggle('scrolled', window.scrollY > 80);
   });
 
   // ===== MOBILE MENU =====
@@ -49,7 +46,6 @@
     const nums = document.querySelectorAll('.stat-num');
     nums.forEach(function(el){
       const target = parseInt(el.getAttribute('data-target'));
-      const suffix = el.dataset.suffix || '';
       const duration = 2000;
       const step = Math.max(1, Math.floor(target / 60));
       let current = 0;
@@ -59,12 +55,10 @@
           current = target;
           clearInterval(inc);
         }
-        el.textContent = current.toLocaleString() + suffix;
+        el.textContent = current.toLocaleString();
       }, duration / (target / step));
     });
   }
-
-  // ===== INTERSECTION OBSERVER FOR COUNTERS =====
   const heroStats = document.querySelector('.hero-stats');
   let countersTriggered = false;
   if(heroStats){
@@ -103,7 +97,7 @@
     setInterval(function(){ goTo((idx + 1) % total); }, 5000);
   }
 
-  // ===== SMOOTH SCROLL FOR ANCHOR LINKS =====
+  // ===== SMOOTH SCROLL =====
   document.querySelectorAll('a[href^="#"]').forEach(function(a){
     a.addEventListener('click', function(e){
       const target = document.querySelector(this.getAttribute('href'));
@@ -111,6 +105,67 @@
         e.preventDefault();
         target.scrollIntoView({behavior:'smooth', block:'start'});
       }
+    });
+  });
+
+  // ===== SCROLL REVEAL =====
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.1, rootMargin:'0px 0px -50px 0px'});
+  revealEls.forEach(function(el){ revealObs.observe(el); });
+
+  // ===== FORM SUBMISSION =====
+  const contactForm = document.getElementById('contactForm');
+  if(contactForm){
+    contactForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      const btn = contactForm.querySelector('.btn');
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+      const data = new URLSearchParams(new FormData(contactForm));
+      fetch('/api/contact', {
+        method: 'POST',
+        body: data,
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      }).then(function(res){
+        return res.json();
+      }).then(function(json){
+        if(json.success){
+          contactForm.innerHTML = '<div style="text-align:center;padding:40px 20px"><div style="font-size:3rem;margin-bottom:16px">✓</div><h3 style="color:var(--primary);margin-bottom:8px">Thank You!</h3><p style="color:var(--gray)">Your message has been sent successfully. We\'ll get back to you shortly.</p></div>';
+        } else {
+          btn.textContent = 'Send Message';
+          btn.disabled = false;
+          alert(json.message || 'Something went wrong. Please try again.');
+        }
+      }).catch(function(){
+        btn.textContent = 'Send Message';
+        btn.disabled = false;
+        alert('Something went wrong. Please check your connection and try again.');
+      });
+    });
+  }
+
+  // ===== 3D TILT ON CARDS =====
+  const tiltCards = document.querySelectorAll('.tilt-card');
+  tiltCards.forEach(function(card){
+    card.addEventListener('mousemove', function(e){
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = (y - centerY) / centerY * -6;
+      const rotateY = (x - centerX) / centerX * 6;
+      card.style.transform = 'perspective(800px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale3d(1.02,1.02,1.02)';
+    });
+    card.addEventListener('mouseleave', function(){
+      card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
     });
   });
 

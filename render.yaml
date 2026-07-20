@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: prudential-tax-partners
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: EMAIL_USER
+        value: your-email@gmail.com
+      - key: EMAIL_PASS
+        value: your-gmail-app-password
