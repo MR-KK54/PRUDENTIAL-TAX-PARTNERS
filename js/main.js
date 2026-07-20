@@ -1,6 +1,8 @@
 ;(function(){
   'use strict';
 
+  var API_URL = 'https://prudential-tax-partners-api.your-subdomain.workers.dev';
+
   // ===== PRELOADER =====
   window.addEventListener('load', function(){
     document.getElementById('preloader').classList.add('hidden');
@@ -129,7 +131,7 @@
       btn.textContent = 'Sending...';
       btn.disabled = true;
       const data = new URLSearchParams(new FormData(contactForm));
-      fetch('/api/contact', {
+      fetch(API_URL + '/api/contact', {
         method: 'POST',
         body: data,
         headers: {'Content-Type': 'application/x-www-form-urlencoded'}

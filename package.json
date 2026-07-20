@@ -5,7 +5,10 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "worker:dev": "wrangler dev",
+    "worker:deploy": "wrangler deploy",
+    "worker:secrets": "wrangler secret put EMAIL_USER && wrangler secret put EMAIL_PASS"
   },
   "dependencies": {
     "cors": "^2.8.5",
