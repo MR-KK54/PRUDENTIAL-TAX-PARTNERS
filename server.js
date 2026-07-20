@@ -60,14 +60,14 @@ app.post('/api/contact', async (req, res) => {
       subject: 'New enquiry from PRUDENTIAL TAX PARTNERS website',
       html: `
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
-          <h2 style="color:#1e1b4b">New Contact Form Submission</h2>
+          <h2 style="color:#064e3b">New Contact Form Submission</h2>
           <table style="width:100%;border-collapse:collapse;margin-top:16px">
-            <tr><td style="padding:10px;border:1px solid #e2e8f0;background:#f5f3ff;font-weight:600;color:#1e1b4b">Name</td><td style="padding:10px;border:1px solid #e2e8f0">${Name}</td></tr>
-            <tr><td style="padding:10px;border:1px solid #e2e8f0;background:#f5f3ff;font-weight:600;color:#1e1b4b">Email</td><td style="padding:10px;border:1px solid #e2e8f0">${Email}</td></tr>
-            <tr><td style="padding:10px;border:1px solid #e2e8f0;background:#f5f3ff;font-weight:600;color:#1e1b4b">Company</td><td style="padding:10px;border:1px solid #e2e8f0">${Company || 'N/A'}</td></tr>
-            <tr><td style="padding:10px;border:1px solid #e2e8f0;background:#f5f3ff;font-weight:600;color:#1e1b4b">Phone</td><td style="padding:10px;border:1px solid #e2e8f0">${Phone || 'N/A'}</td></tr>
-            <tr><td style="padding:10px;border:1px solid #e2e8f0;background:#f5f3ff;font-weight:600;color:#1e1b4b">Service</td><td style="padding:10px;border:1px solid #e2e8f0">${Service || 'N/A'}</td></tr>
-            <tr><td style="padding:10px;border:1px solid #e2e8f0;background:#f5f3ff;font-weight:600;color:#1e1b4b">Message</td><td style="padding:10px;border:1px solid #e2e8f0">${Message}</td></tr>
+            <tr><td style="padding:10px;border:1px solid #e2e8f0;background:#f0fdf4;font-weight:600;color:#064e3b">Name</td><td style="padding:10px;border:1px solid #e2e8f0">${Name}</td></tr>
+            <tr><td style="padding:10px;border:1px solid #e2e8f0;background:#f0fdf4;font-weight:600;color:#064e3b">Email</td><td style="padding:10px;border:1px solid #e2e8f0">${Email}</td></tr>
+            <tr><td style="padding:10px;border:1px solid #e2e8f0;background:#f0fdf4;font-weight:600;color:#064e3b">Company</td><td style="padding:10px;border:1px solid #e2e8f0">${Company || 'N/A'}</td></tr>
+            <tr><td style="padding:10px;border:1px solid #e2e8f0;background:#f0fdf4;font-weight:600;color:#064e3b">Phone</td><td style="padding:10px;border:1px solid #e2e8f0">${Phone || 'N/A'}</td></tr>
+            <tr><td style="padding:10px;border:1px solid #e2e8f0;background:#f0fdf4;font-weight:600;color:#064e3b">Service</td><td style="padding:10px;border:1px solid #e2e8f0">${Service || 'N/A'}</td></tr>
+            <tr><td style="padding:10px;border:1px solid #e2e8f0;background:#f0fdf4;font-weight:600;color:#064e3b">Message</td><td style="padding:10px;border:1px solid #e2e8f0">${Message}</td></tr>
           </table>
           <p style="color:#64748b;font-size:0.85rem;margin-top:16px">Received on ${submission.date}</p>
         </div>`
@@ -80,16 +80,16 @@ app.post('/api/contact', async (req, res) => {
       subject: 'Thank you for contacting PRUDENTIAL TAX PARTNERS',
       html: `
         <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
-          <h2 style="color:#1e1b4b">Thank You, ${Name}!</h2>
+          <h2 style="color:#064e3b">Thank You, ${Name}!</h2>
           <p style="color:#1e293b;font-size:1rem;line-height:1.6">We have received your enquiry and our team will review it shortly.</p>
           <p style="color:#1e293b;font-size:1rem;line-height:1.6">We typically respond within <strong>24 hours</strong> during business days.</p>
-          <div style="background:#f5f3ff;padding:20px;border-radius:8px;margin:20px 0">
-            <p style="margin:0 0 8px;color:#1e1b4b;font-weight:600">For urgent matters:</p>
-            <p style="margin:0;color:#64748b">Phone: <a href="tel:+919884455667" style="color:#8b5cf6">+91 98844 55667</a></p>
-            <p style="margin:0;color:#64748b">Email: <a href="mailto:kishorekumar.78k@gmail.com" style="color:#8b5cf6">kishorekumar.78k@gmail.com</a></p>
+          <div style="background:#f0fdf4;padding:20px;border-radius:8px;margin:20px 0">
+            <p style="margin:0 0 8px;color:#064e3b;font-weight:600">For urgent matters:</p>
+            <p style="margin:0;color:#64748b">Phone: <a href="tel:+919884455667" style="color:#10b981">+91 98844 55667</a></p>
+            <p style="margin:0;color:#64748b">Email: <a href="mailto:kishorekumar.78k@gmail.com" style="color:#10b981">kishorekumar.78k@gmail.com</a></p>
           </div>
           <p style="color:#1e293b;font-size:1rem;line-height:1.6">Best regards,</p>
-          <p style="color:#1e1b4b;font-weight:700;font-size:1.1rem">PRUDENTIAL TAX PARTNERS</p>
+          <p style="color:#064e3b;font-weight:700;font-size:1.1rem">PRUDENTIAL TAX PARTNERS</p>
           <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0">
           <p style="color:#94a3b8;font-size:0.8rem">Precision. Integrity. Trust. — Since 2012</p>
         </div>`
