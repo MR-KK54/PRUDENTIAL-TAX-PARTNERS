@@ -2,6 +2,8 @@ name = "prudential-tax-partners-api"
 main = "src/index.js"
 compatibility_date = "2025-04-01"
 compatibility_flags = ["nodejs_compat"]
+workers_dev = true
 
 [env.production]
 vars = { ENVIRONMENT = "production" }
+workers_dev = true
