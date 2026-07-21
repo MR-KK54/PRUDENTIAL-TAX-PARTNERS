@@ -1,11 +1,5 @@
 import nodemailer from 'nodemailer';
 
-const ALLOWED_ORIGINS = [
-  'https://mr-kk54.github.io',
-  'http://localhost:3000',
-  'http://localhost:8787',
-];
-
 function json(data, status = 200, cors) {
   return new Response(JSON.stringify(data), {
     status,
@@ -14,12 +8,12 @@ function json(data, status = 200, cors) {
 }
 
 function getCorsHeaders(request) {
-  const origin = request.headers.get('Origin') || '';
-  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  const origin = request.headers.get('Origin') || '*';
   return {
-    'Access-Control-Allow-Origin': allowed,
+    'Access-Control-Allow-Origin': origin,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Max-Age': '86400',
   };
 }
 
@@ -33,6 +27,10 @@ export default {
 
     const url = new URL(request.url);
 
+    if (url.pathname === '/health' || url.pathname === '/') {
+      return json({ status: 'ok', worker: 'prudential-tax-partners-api' }, 200, cors);
+    }
+
     if (request.method === 'POST' && url.pathname === '/api/contact') {
       return handleContact(request, env, cors);
     }
@@ -42,20 +40,20 @@ export default {
 };
 
 async function handleContact(request, env, cors) {
+  let Name, Email, Company, Phone, Service, Message;
+
   try {
     const ct = request.headers.get('Content-Type') || '';
-    let body;
-    if (ct.includes('application/x-www-form-urlencoded')) {
-      const fd = await request.formData();
-      body = Object.fromEntries(fd);
-    } else if (ct.includes('application/json')) {
-      body = await request.json();
+
+    if (ct.includes('application/json')) {
+      const body = await request.json();
+      Name = body.Name; Email = body.Email; Company = body.Company;
+      Phone = body.Phone; Service = body.Service; Message = body.Message;
     } else {
       const fd = await request.formData();
-      body = Object.fromEntries(fd);
+      Name = fd.get('Name'); Email = fd.get('Email'); Company = fd.get('Company');
+      Phone = fd.get('Phone'); Service = fd.get('Service'); Message = fd.get('Message');
     }
-
-    const { Name, Email, Company, Phone, Service, Message } = body;
 
     if (!Name || !Email || !Message) {
       return json({ success: false, message: 'Name, Email, and Message are required.' }, 400, cors);
@@ -63,6 +61,10 @@ async function handleContact(request, env, cors) {
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      pool: false,
       auth: {
         user: env.EMAIL_USER,
         pass: env.EMAIL_PASS,
@@ -70,6 +72,7 @@ async function handleContact(request, env, cors) {
     });
 
     const dateStr = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
     const ownerHtml = `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
         <h2 style="color:#064e3b">New Contact Form Submission</h2>
@@ -116,7 +119,11 @@ async function handleContact(request, env, cors) {
 
     return json({ success: true, message: 'Your message has been sent successfully!' }, 200, cors);
   } catch (error) {
-    console.error('Worker error:', error);
-    return json({ success: false, message: 'Failed to send message. Please try again later.' }, 500, cors);
+    console.error('Worker error:', error.message, error.stack);
+    return json({
+      success: false,
+      message: 'Failed to send message. Please try again later.',
+      debug: error.message,
+    }, 500, cors);
   }
 }
