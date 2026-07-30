@@ -9,14 +9,22 @@
   });
 
   // ===== HEADER SCROLL =====
-  const header = document.getElementById('header');
+  var header = document.getElementById('header');
   window.addEventListener('scroll', function(){
     header.classList.toggle('scrolled', window.scrollY > 80);
   });
 
+  // ===== SCROLL INDICATOR FADE =====
+  var scrollIndicator = document.querySelector('.scroll-indicator');
+  if(scrollIndicator){
+    window.addEventListener('scroll', function(){
+      scrollIndicator.style.opacity = Math.max(0, 1 - window.scrollY / 200);
+    });
+  }
+
   // ===== MOBILE MENU =====
-  const toggle = document.getElementById('menuToggle');
-  const nav = document.getElementById('nav');
+  var toggle = document.getElementById('menuToggle');
+  var nav = document.getElementById('nav');
   toggle.addEventListener('click', function(){
     nav.classList.toggle('open');
     toggle.classList.toggle('active');
@@ -29,12 +37,12 @@
   });
 
   // ===== ACTIVE NAV LINK =====
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav a');
+  var sections = document.querySelectorAll('section[id]');
+  var navLinks = document.querySelectorAll('.nav a');
   window.addEventListener('scroll', function(){
-    let current = '';
+    var current = '';
     sections.forEach(function(s){
-      const top = s.offsetTop - 120;
+      var top = s.offsetTop - 120;
       if(window.scrollY >= top) current = s.getAttribute('id');
     });
     navLinks.forEach(function(a){
@@ -45,13 +53,13 @@
 
   // ===== COUNTER ANIMATION =====
   function animateCounters(){
-    const nums = document.querySelectorAll('.stat-num');
+    var nums = document.querySelectorAll('.stat-num');
     nums.forEach(function(el){
-      const target = parseInt(el.getAttribute('data-target'));
-      const duration = 2000;
-      const step = Math.max(1, Math.floor(target / 60));
-      let current = 0;
-      const inc = setInterval(function(){
+      var target = parseInt(el.getAttribute('data-target'));
+      var duration = 2000;
+      var step = Math.max(1, Math.floor(target / 60));
+      var current = 0;
+      var inc = setInterval(function(){
         current += step;
         if(current >= target){
           current = target;
@@ -61,10 +69,10 @@
       }, duration / (target / step));
     });
   }
-  const heroStats = document.querySelector('.hero-stats');
-  let countersTriggered = false;
+  var heroStats = document.querySelector('.hero-stats');
+  var countersTriggered = false;
   if(heroStats){
-    const obs = new IntersectionObserver(function(entries){
+    var obs = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
         if(e.isIntersecting && !countersTriggered){
           countersTriggered = true;
@@ -77,14 +85,14 @@
   }
 
   // ===== TESTIMONIAL SLIDER =====
-  const track = document.getElementById('testimonialTrack');
-  const dotsContainer = document.getElementById('testimonialDots');
+  var track = document.getElementById('testimonialTrack');
+  var dotsContainer = document.getElementById('testimonialDots');
   if(track && dotsContainer){
-    const cards = track.querySelectorAll('.testimonial-card');
-    const total = cards.length;
-    let idx = 0;
+    var cards = track.querySelectorAll('.testimonial-card');
+    var total = cards.length;
+    var idx = 0;
     cards.forEach(function(_, i){
-      const dot = document.createElement('span');
+      var dot = document.createElement('span');
       if(i === 0) dot.classList.add('active');
       dot.addEventListener('click', function(){ goTo(i); });
       dotsContainer.appendChild(dot);
@@ -102,7 +110,7 @@
   // ===== SMOOTH SCROLL =====
   document.querySelectorAll('a[href^="#"]').forEach(function(a){
     a.addEventListener('click', function(e){
-      const target = document.querySelector(this.getAttribute('href'));
+      var target = document.querySelector(this.getAttribute('href'));
       if(target){
         e.preventDefault();
         target.scrollIntoView({behavior:'smooth', block:'start'});
@@ -111,8 +119,8 @@
   });
 
   // ===== SCROLL REVEAL =====
-  const revealEls = document.querySelectorAll('.reveal');
-  const revealObs = new IntersectionObserver(function(entries){
+  var revealEls = document.querySelectorAll('.reveal');
+  var revealObs = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if(e.isIntersecting){
         e.target.classList.add('visible');
@@ -123,14 +131,14 @@
   revealEls.forEach(function(el){ revealObs.observe(el); });
 
   // ===== FORM SUBMISSION =====
-  const contactForm = document.getElementById('contactForm');
+  var contactForm = document.getElementById('contactForm');
   if(contactForm){
     contactForm.addEventListener('submit', function(e){
       e.preventDefault();
-      const btn = contactForm.querySelector('.btn');
+      var btn = contactForm.querySelector('.btn');
       btn.textContent = 'Sending...';
       btn.disabled = true;
-      const data = new URLSearchParams(new FormData(contactForm));
+      var data = new URLSearchParams(new FormData(contactForm));
       fetch(API_URL + '/api/contact', {
         method: 'POST',
         body: data,
@@ -139,7 +147,7 @@
         return res.json();
       }).then(function(json){
         if(json.success){
-          contactForm.innerHTML = '<div style="text-align:center;padding:40px 20px"><div style="font-size:3rem;margin-bottom:16px">✓</div><h3 style="color:var(--primary);margin-bottom:8px">Thank You!</h3><p style="color:var(--gray)">Your message has been sent successfully. We\'ll get back to you shortly.</p></div>';
+          contactForm.innerHTML = '<div style="text-align:center;padding:40px 20px"><div style="font-size:3rem;margin-bottom:8px;color:var(--gold)">&#10003;</div><h3 style="font-family:Playfair Display,serif;font-size:1.5rem;color:var(--primary);margin-bottom:8px">Thank You</h3><p style="color:var(--text-muted)">Your message has been sent successfully. We will be in touch shortly.</p></div>';
         } else {
           btn.textContent = 'Send Message';
           btn.disabled = false;
@@ -153,22 +161,58 @@
     });
   }
 
-  // ===== 3D TILT ON CARDS =====
-  const tiltCards = document.querySelectorAll('.tilt-card');
+  // ===== ENHANCED 3D TILT ON CARDS =====
+  var tiltCards = document.querySelectorAll('.tilt-card');
   tiltCards.forEach(function(card){
     card.addEventListener('mousemove', function(e){
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotateX = (y - centerY) / centerY * -6;
-      const rotateY = (x - centerX) / centerX * 6;
-      card.style.transform = 'perspective(800px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale3d(1.02,1.02,1.02)';
+      var rect = card.getBoundingClientRect();
+      var x = e.clientX - rect.left;
+      var y = e.clientY - rect.top;
+      var centerX = rect.width / 2;
+      var centerY = rect.height / 2;
+      var rotateX = (y - centerY) / centerY * -10;
+      var rotateY = (x - centerX) / centerX * 10;
+      card.style.transform = 'perspective(1000px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale3d(1.03,1.03,1.03)';
+      card.style.boxShadow = (rotateX < 0 ? Math.abs(rotateX) / 2 + 10 : 10) + 'px ' + (rotateY > 0 ? rotateY / 2 + 10 : 10) + 'px 40px rgba(61,50,44,0.1)';
     });
     card.addEventListener('mouseleave', function(){
-      card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+      card.style.boxShadow = '';
     });
   });
+
+  // ===== HERO 3D PARALLAX ON MOUSE MOVE =====
+  var hero = document.querySelector('.hero');
+  var hero3dLayer = document.getElementById('hero3dLayer');
+  var heroContent = document.getElementById('heroContent');
+  var heroShapes = hero3dLayer ? hero3dLayer.querySelectorAll('.hero-3d-shape') : [];
+
+  if(hero && hero3dLayer){
+    hero.addEventListener('mousemove', function(e){
+      var rect = hero.getBoundingClientRect();
+      var x = (e.clientX - rect.left) / rect.width - 0.5;
+      var y = (e.clientY - rect.top) / rect.height - 0.5;
+
+      if(heroContent){
+        heroContent.style.transform = 'translateZ(20px) rotateX(' + (y * -2) + 'deg) rotateY(' + (x * 2) + 'deg)';
+      }
+
+      heroShapes.forEach(function(shape, i){
+        var depth = (i + 1) * 30;
+        var moveX = x * depth;
+        var moveY = y * depth;
+        shape.style.transform = 'translateX(' + moveX + 'px) translateY(' + moveY + 'px)';
+      });
+    });
+
+    hero.addEventListener('mouseleave', function(){
+      if(heroContent){
+        heroContent.style.transform = 'translateZ(0) rotateX(0deg) rotateY(0deg)';
+      }
+      heroShapes.forEach(function(shape){
+        shape.style.transform = '';
+      });
+    });
+  }
 
 })();
